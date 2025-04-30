@@ -1,0 +1,21 @@
+{% extends 'women/base.html' %}
+
+{% block content %}
+<h1>{{title}}</h1>
+<form action="{% url 'add_page' %}" method="post" enctype="multipart/form-data"> <!--  url 'add_page'-
+адрес где отображается наша форма , enctype="multipart/form-data"-для корректной загрузки файлов изображения автоматически джанго переносит в папку media а путь в базу данных-->
+
+    {% csrf_token %} <!-- обязательный тег  джанго для защиты от SQL иньекций и похищения данных-->
+    <!--  убрали в 13 уроке {{ form.as_p }}   обязательный тег  с ссылкой p (вообще то функцмя p() для
+    формирования полей в этом месте. Джанго по ссылке p сам вызовет и обработает p())-->
+    <div class="form-error">{{ form.non_field_errors }}</div>  <!-- отображать ошибки не связанные с полями-->
+{% for f in form %}  <!-- f ссылка на элементы форм (title, slug, content и др.) -->
+<p><label class="form-label" for="{{ f.id_for_label }}">{{f.label}}: </label>{{ f }}</p>
+<div class="form-error">{{ f.errors }}</div>
+{% endfor %}
+
+
+    <button type="submit">Добавить</button>
+</form>
+
+{% endblock %}

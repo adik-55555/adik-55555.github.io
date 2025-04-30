@@ -1,0 +1,45 @@
+{% extends 'women/base.html' %} <!-- расширяем базовый шаблон чтоб добавить в block content -->
+
+{% block content %}
+<ul class="list-articles"    
+    {% for p in posts %} 
+     <!-- отражаем посты-p-атрибуты класса нашей модели являющимися ссылками на
+    соответствкющие экземпляры классов файла views.py-->
+    
+            <li><div class="article-panel">
+        <p class="first">Категория: {{p.cat}}</p>
+        <p class="last">Дата: {{p.time_update|date:"d-m-Y H:i:s"}}</p>
+</div>
+
+{% if p.photo %}
+	<p><img class="img-article-left thumb" src="{{p.photo.url}}"></p>
+{% endif %}
+
+                <h2>{{p.title}}</h2>
+        {% autoescape on %} <!-- фильтры для экранирования или неэкранирования тегов при off
+        теги экранируются и выполняются как теги при on проходят как текст простой-->
+        {{p.content|linebreaks|truncatewords:50}} <!-- linebreaks и truncatewords-фильтры форматирования текста linebreaks-на абзацы, truncatewords:50- показать первые 50 слов-->
+        {% endautoescape %}
+            <div class="clear"><div>
+            <p class="link-read-post"><a href="{% url 'post' p.pk %}">Читать дальше</a></p>    
+            </li> <!-- 'post'-название маршрута в url.py а p.pk-индификатор записи в базе данных-->
+    {% endfor %}
+</ul>
+
+{% endblock %}
+
+<!-- <!DOCTYPE html> после создания базового шаблона заменили
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+</head>
+<body>
+<ul>
+{% for m in menu %}  отражаем список меню из файла views.py
+<li>{{m}}</li>
+{% endfor %}
+</ul>
+</body>
+</html>  -->
+
